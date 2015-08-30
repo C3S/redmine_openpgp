@@ -1,0 +1,66 @@
+en:
+  header_openpgp: PGP Schlüsselverwaltung
+  subheader_openpgp_incoming: Eingehende Mails
+  subheader_openpgp_outgoing: Ausgehende Mails
+  subheader_save_key: Existierenden Schlüssel hinzufügen
+  subheader_generate_key: Neuen Schlüssel generieren
+  label_openpgp_activation: Plugin Aktivierung
+  label_unencrypted_mails: Unverschlüsselte Mails
+  label_signature_needed: Nur valide Signaturen
+  label_filtered_mail_footer: Angehängte Nachricht in gefilterten Mails
+  label_public_key: Öffentlicher PGP Schlüssel
+  label_private_key: Privater PGP Schlüssel
+  label_fingerprint: Fingerabdruck
+  label_metadata: Metadaten
+  label_key_type: Schlüsseltyp
+  label_key_length: Schlüssellänge
+  label_subkey_type: Unterschlüsseltyp
+  label_subkey_length: Unterschlüssellänge
+  label_name_real: Name
+  label_name_comment: Kommentar
+  label_name_email: Email
+  label_expire_date: Ablaufdatum
+  label_secret: Passphrase
+  option_activation_all: für alle Projekte
+  option_activation_project: abhängig von Projekteinstellungen
+  option_activation_none: deaktiviert
+  option_unencrypted_mails_blocked: blockiert
+  option_unencrypted_mails_filtered: gefiltert
+  option_unencrypted_mails_unchanged: unverändert
+  button_create: Speichern
+  button_delete: Löschen
+  button_generate: Generieren
+  note_login: Bitte einloggen, um die PGP Schlüssel zu verwalten.
+  note_admin_only: Nur Administratoren können den privaten Schlüssel und die Passphrase für den Redmine Server verändern
+  note_user_public_key_missing: Füge Deinen öffentlichen PGP Schlüssel hier hinzu, um verschlüsselte Mails zu erhalten
+  note_user_public_key_given: Mit diesem PGP Schlüssel werden Mails von Redmine verschlüsselt
+  note_server_public_key_missing: Kein Schlüssel hinterlegt. Benachrichtige bitte die Administratoren, falls Du Mails an Redmine verschlüsseln möchtest.
+  note_server_public_key_given: Benutze diesen öffentlichen PGP Schlüssel, um Mails an Redmine zu verschlüsseln
+  note_server_private_key_create: Füge einen privaten PGP Schlüssel für den Redmine Server hinzu, um verschlüsselte Mails an Redmine zu ermöglichen
+  note_server_private_key_generate: Generiere einen privaten PGP Schlüssel für den Redmine Server, um verschlüsselte Mails an Redmine zu ermöglichen
+  note_receiving_emails: Die Annahme von Emails muss in Redmine konfiguriert sein, siehe
+  note_cleartext_create: "Der private Schlüssel und die Passphrase werden im Klartext übertragen! Verwende zumindest https oder nutze besser den serverseitigen rake taks: "
+  note_cleartext_generate: "Die Passphrase wird im Klartext übertragen! Verwende zumindest https oder nutze besser den serverseitigen rake taks: "
+  note_sent_to: gesendet an
+  flash_public_key_not_valid: PGP Schlüssel ist ungültig (er sollte mit '-----BEGIN PGP PUBLIC KEY BLOCK-----' starten und mit '-----END PGP PUBLIC KEY BLOCK-----' enden)
+  flash_private_key_not_valid: PGP Schlüssel ist ungültig (er sollte mit '-----BEGIN PGP PRIVATE KEY BLOCK-----' starten und mit '-----END PGP PRIVATE KEY BLOCK-----' enden)
+  flash_bad_passphrase: Passphrase war falsch (bitte nochmal versuchen)
+  flash_key_exists: Schlüssel existiert schon (bitte zuerst löschen)
+  flash_key_not_exists: Schlüssel existiert nicht
+  flash_update_not_allowed: Operation nicht erlaubt (bitte nicht weiter versuchen)
+  flash_import_error: Fehler beim Importieren des Schlüssels (bitte nochmal versuchen oder die Administratoren benachrichtigen)
+  flash_unknown_error: Unbekannter Fehler (bitte nochmal versuchen oder die Administratoren benachrichtigen)
+  flash_no_secret: Keine Passphrase angegeben (kein Problem, aber bist Du Dir sicher?)
+  flash_create_succesful: PGP Schlüssel erfolgreich gepeichert
+  flash_delete_succesful: PGP Schlüssel erfolgreich gelöscht
+  flash_generate_succesful: PGP Schlüssel erfolgreich generiert
+  filtered_mail_footer: "Diese Mail wurde für aus Gründen der Sicherheit gefiltert. Folge diesem Link und füge Deinen öffentlichen PGP SChlüssel hinzu, um ungefilterte, verschlüsselte Mails zu erhalten:"
+  filtered_mail_attachments_added: Anhänge hinzugefügt
+  filtered_mail_document_added: Dokument hinzugefügt
+  filtered_mail_issue_add: Ticket hinzugefügt
+  filtered_mail_issue_edit: Ticket bearbeite
+  filtered_mail_message_posted: Nachricht hinzugefügt
+  filtered_mail_news_added: Neuigkeit hinzugefügt
+  filtered_mail_news_comment_added: Kommentar hinzugefügt
+  filtered_mail_wiki_content_added: Seite hinzugefügt
+  filtered_mail_wiki_content_updated: Seite editiert

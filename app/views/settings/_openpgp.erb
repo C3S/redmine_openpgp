@@ -1,0 +1,36 @@
+<h4><%= l(:subheader_openpgp_incoming) %></h4>
+<p>
+    <%= label_tag     'settings[signature_needed]', l(:label_signature_needed) %>
+    <%= check_box_tag 'settings[signature_needed]', nil,
+                      @settings['signature_needed'] %>
+</p>
+
+<h4><%= l(:subheader_openpgp_outgoing) %></h4>
+<p>
+    <%= label_tag   'settings[activation]', l(:label_openpgp_activation) %>
+    <%= select_tag  'settings[activation]',
+                    options_for_select([
+                            [l(:option_activation_all), "all"],
+                            [l(:option_activation_project), "project"],
+                            [l(:option_activation_none), "none"]
+                        ],
+                        @settings['activation']
+                    ) %>
+</p>
+<p>
+    <%= label_tag   'settings[unencrypted_mails]', l(:label_unencrypted_mails) %>
+    <%= select_tag  'settings[unencrypted_mails]',
+                    options_for_select([
+                            [l(:option_unencrypted_mails_blocked), "blocked"],
+                            [l(:option_unencrypted_mails_filtered), "filtered"],
+                            [l(:option_unencrypted_mails_unchanged), "unchanged"]
+                        ],
+                        @settings['unencrypted_mails']
+                    ) %>
+</p>
+<p>
+    <%= label_tag     'settings[filtered_mail_footer]', l(:label_filtered_mail_footer) %>
+    <%= text_area_tag 'settings[filtered_mail_footer]',
+                      @settings['filtered_mail_footer'],
+                      {:size => "160x10"} %>
+</p>

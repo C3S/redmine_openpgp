@@ -1,0 +1,16 @@
+<h1>
+    <%= link_to l(:filtered_mail_issue_edit),
+                @issue_url %>
+</h1>
+
+<p>
+    <%= l(:filtered_mail_footer) %>
+    <%= link_to l(:header_openpgp),
+                Setting['protocol'] + '://' + Setting['host_name'] + '/pgp' %>
+</p>
+
+<% if not Setting.plugin_openpgp['filtered_mail_footer'].blank? %>
+<p>
+    <%= Setting.plugin_openpgp['filtered_mail_footer'].html_safe %>
+</p>
+<% end %>

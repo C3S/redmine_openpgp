@@ -1,0 +1,11 @@
+<%= l(:filtered_mail_wiki_content_updated) %>
+<%= @wiki_content_url %>
+
+----------------------------------------
+
+<%= l(:filtered_mail_footer) %>
+<%= Setting['protocol'] + '://' + Setting['host_name'] + '/pgp' %>
+
+<% if not Setting.plugin_openpgp['filtered_mail_footer'].blank? -%>
+<%= Setting.plugin_openpgp['filtered_mail_footer'] %>
+<% end -%>

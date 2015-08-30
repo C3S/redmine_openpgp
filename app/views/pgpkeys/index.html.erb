@@ -1,0 +1,172 @@
+<h2><%= l(:header_openpgp) %></h2>
+
+<% if not User.current.logged? %>
+    <p><%= l(:note_login) %></p>
+
+<% else %>
+
+    <div class="splitcontentleft">
+      <h3><%= User.current.name %> (<%= User.current.mail %>)</h3>
+      <%= field_set_tag '', class: 'box tabular' do %>
+        <% if @user_pgpkey %>
+
+          <% # user key given %>
+          <%= form_tag method: "post", action: "delete" do %>
+            <p>
+              <%= label_tag 'fpr', l(:label_fingerprint) %>
+              <%= text_field_tag 'fpr', @user_pgpkey.fpr, size: "40", readonly: true %>
+            </p>
+            <p>
+              <%= label_tag 'metadata', l(:label_metadata) %>
+              <%= text_area_tag 'meta', @user_pgpkey.metadata, rows: "4", readonly: true %>
+            </p>
+            <p>
+              <%= label_tag 'key', l(:label_public_key) %>
+              <%= text_area_tag 'key', @user_pgpkey.public_key, rows: "30", readonly: true %>
+            </p>
+            <p>
+              <em><%= l(:note_user_public_key_given) %><br/>
+              (<%= l(:note_sent_to) %> <%= User.current.mail %>)</em>
+            </p>
+            <%= hidden_field_tag 'user_id', User.current.id %>
+            <p><%= submit_tag l(:button_delete) %></p>
+          <% end %>
+
+        <% else %>
+
+          <% # no user key given %>
+          <%= form_tag method: "post", action: "create" do %>
+            <p>
+              <%= label_tag 'key', l(:label_public_key) %>
+              <%= text_area_tag 'key', nil, :size => "50x30" %>
+            </p>
+            <p>
+              <em><%= l(:note_user_public_key_missing) %><br/>
+              (<%= l(:note_sent_to) %> <%= User.current.mail %>)</em>
+            </p>
+            <%= hidden_field_tag 'user_id', User.current.id %>
+            <p><%= submit_tag l(:button_create) %></p>
+          <% end %>
+
+        <% end %>
+      <% end %>
+    </div>
+
+    <div class="splitcontentright">
+      <h3>Redmine Server (<%= Setting['mail_from'] %>)</h3>
+      <%= field_set_tag '', class: 'box tabular' do %>
+        <% if @server_pgpkey %>
+
+          <% # server key given %>
+          <%= form_tag method: "post", action: "delete" do %>
+            <p>
+              <%= label_tag 'fpr', l(:label_fingerprint) %>
+              <%= text_field_tag 'fpr', @server_pgpkey.fpr, size: "40", readonly: true %>
+            </p>
+            <p>
+              <%= label_tag 'metadata', l(:label_metadata) %>
+              <%= text_area_tag 'meta', @server_pgpkey.metadata, rows: "4", readonly: true %>
+            </p>
+            <p>
+              <%= label_tag 'key', l(:label_public_key) %>
+              <%= text_area_tag 'key', @server_pgpkey.public_key, rows: "30", readonly: true %>
+            </p>
+            <p>
+              <em><%= l(:note_server_public_key_given) %><br/>
+              (<%= l(:note_sent_to) %> <%= Setting['mail_from'] %>)</em>
+            </p>
+            <% if User.current.admin? %>
+              <%= hidden_field_tag 'user_id', 0 %>
+              <p><%= submit_tag l(:button_delete) %></p>
+            <% end %>
+          <% end %>
+
+        <% else %>
+
+          <% # no server key given %>
+          <% if not User.current.admin? %>
+            <div class="flash warning"><%= l(:note_server_public_key_missing) %></div>
+          <% else %>
+            <div class="flash notice"><%= l(:note_admin_only) %></div>
+
+            <% # save existing key %>
+            <h4><%= l(:subheader_save_key) %></h4>
+            <div class="flash error">
+              <%= l(:note_cleartext_create) %>
+              <em>redmine:update_redmine_pgpkey</em>.
+            </div>
+            <%= form_tag method: "post", action: "create" do %>
+              <p>
+                <%= label_tag 'key', l(:label_private_key) %>
+                <%= text_area_tag 'key', nil, :size => "50x30" %>
+              </p>
+              <p>
+                <%= label_tag 'secret', l(:label_secret) %>
+                <%= password_field_tag 'secret', nil, size: "40" %>
+              </p>
+              <p>
+                <em><%= l(:note_server_private_key_create) %><br/>
+                (<%= l(:note_receiving_emails) %> <a href="https://www.redmine.org/projects/redmine/wiki/RedmineReceivingEmails">Receiving emails</a>)</em>
+              </p>
+              <%= hidden_field_tag 'user_id', 0 %>
+              <p><%= submit_tag l(:button_create) %></p>
+            <% end %>
+            <br/>
+
+            <% # save existing key %>
+            <h4><%= l(:subheader_generate_key) %></h4>
+            <div class="flash error">
+              <%= l(:note_cleartext_generate) %>
+              <em>redmine:generate_redmine_pgpkey</em>.
+            </div>
+            <%= form_tag method: "post", action: "generate" do %>
+              <p>
+                <%= label_tag 'key_type', l(:label_key_type) %>
+                <%= text_field_tag 'key_type', 'RSA', size: "40", readonly: true %>
+              </p>
+              <p>
+                <%= label_tag 'key_length', l(:label_key_length) %>
+                <%= text_field_tag 'key_length', '2048', size: "40", readonly: true %>
+              </p>
+              <p>
+                <%= label_tag 'subkey_type', l(:label_subkey_type) %>
+                <%= text_field_tag 'subkey_type', 'RSA', size: "40", readonly: true %>
+              </p>
+              <p>
+                <%= label_tag 'subkey_length', l(:label_subkey_length) %>
+                <%= text_field_tag 'subkey_length', '2048', size: "40", readonly: true %>
+              </p>
+              <p>
+                <%= label_tag 'name_real', l(:label_name_real) %>
+                <%= text_field_tag 'name_real', 'Redmine Server', size: "40", readonly: true %>
+              </p>
+              <p>
+                <%= label_tag 'name_comment', l(:label_name_comment) %>
+                <%= text_field_tag 'name_comment', '', size: "40", readonly: true %>
+              </p>
+              <p>
+                <%= label_tag 'name_email', l(:label_name_email) %>
+                <%= text_field_tag 'name_email', Setting['mail_from'], size: "40", readonly: true %>
+              </p>
+              <p>
+                <%= label_tag 'expire_date', l(:label_expire_date) %>
+                <%= text_field_tag 'expire_date', '0', size: "40", readonly: true %>
+              </p>
+              <p>
+                <%= label_tag 'passphrase', l(:label_secret) %>
+                <%= password_field_tag 'passphrase', nil, size: "40" %>
+              </p>
+              <p>
+                <em><%= l(:note_server_private_key_generate) %><br/>
+                (<%= l(:note_receiving_emails) %> <a href="https://www.redmine.org/projects/redmine/wiki/RedmineReceivingEmails">Receiving emails</a>)</em>
+              </p>
+              <p><%= submit_tag l(:button_generate) %></p>
+            <% end %>
+
+          <% end %>
+
+        <% end %>
+      <% end %>
+    </div>
+
+<% end %>
