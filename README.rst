@@ -1,3 +1,4 @@
+===============
 Redmine OpenPGP
 ===============
 
@@ -10,7 +11,7 @@ developed for `C3S - (Cultural Commons Collecting Society) <https://c3s.cc>`_
 
 
 Details
--------
+=======
 
 Users may
 
@@ -51,15 +52,15 @@ Notifications, that may be filtered:
 
 
 Dependencies
-------------
+============
 
 - gpg (http://www.gnupg.org/download/)
-- gpgme (https://github.com/jkraemer/mail-gpg)
+- gpgme (https://github.com/ueno/ruby-gpgme)
 - mail-gpg (https://github.com/jkraemer/mail-gpg)
 
 
 Compatibility
--------------
+=============
 
 This plugin has been tested with
 ::
@@ -73,59 +74,59 @@ This plugin has been tested with
 
 
 Installation
-------------
+============
 
 #. Clone this repo into ``/path/to/redmine/plugins/openpgp``
 
-  ``$git clone https://github.com/C3S/redmine_openpgp /path/to/redmine/plugins/openpgp``
+     ``$git clone https://github.com/C3S/redmine_openpgp /path/to/redmine/plugins/openpgp``
 
 #. Change into redmine root directory
 
-  ``$cd /path/to/redmine``
+     ``$cd /path/to/redmine``
 
 #. Install gems
 
-  ``$bundle install``
+     ``$bundle install``
 
 #. Migrate database
 
-  ``$RAILS_ENV=production rake redmine:plugins:migrate``
+     ``$RAILS_ENV=production rake redmine:plugins:migrate``
 
 #. Restart redmine
 
-  ``$sudo service apache2 restart``
+     ``$sudo service apache2 restart``
 
 
 Configuration
--------------
+=============
 
 Administrators
-''''''''''''''
+--------------
 
 #. Configure redmine
 
-    *Administration / Settings / Email notifications*
+   - *Administration / Settings / Email notifications*
 
-    - Emission email address
+     - Emission email address
 
-    *Administration / Settings / General*
+   - *Administration / Settings / General*
 
-    - Host name and path
-    - Protocol
+     - Host name and path
+     - Protocol
 
-    *Administration / Settings / Incoming emails*
+   - *Administration / Settings / Incoming emails*
 
-    - Enable WS for incoming emails
-    - API key
+     - Enable WS for incoming emails
+     - API key
 
 #. Configure plugin
 
-    *Administration / Plugins / Openpgp*
+   - *Administration / Plugins / Openpgp*
 
-3. Add or generate a private PGP key for the redmine server 
+#. Add or generate a private PGP key for the redmine server 
 
-  - *either* server-side (secure)
-  - *or* client-side (**INSECURE over http**, more or less secure over https)
+   - *either* server-side (secure)
+   - *or* client-side (**INSECURE over http**, more or less secure over https)
 
 *Note:* The remote server needs enough entropy to generate random, secure keys. If the server side generation process does not proceed or the client side connection has a timeout, connect to the remote server and try ``ls -R /``. If you use ``rngd`` for entropy generation, be advised not to use ``/dev/urandom`` as source for important keys.
 
@@ -133,46 +134,53 @@ Adding an existing private PGP key server-side
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #. copy the ascii armored key into a file on the server
+
 #. change into redmine root directory
 
-  ``$cd /path/to/redmine``
+     ``$cd /path/to/redmine``
 
 #. use a rake task to add the existing key (the old one is deleted). Adjust ``keyfile`` and ``secret``:
 
-  ``$RAILS_ENV="production" rake redmine:update_redmine_pgpkey keyfile="/path/to/key.asc" secret="passphrase"``
+     ``$RAILS_ENV="production" rake redmine:update_redmine_pgpkey keyfile="/path/to/key.asc" secret="passphrase"``
 
 Generating a new private PGP key server-side
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #. change into redmine root directory
 
-  ``$cd /path/to/redmine``
+     ``$cd /path/to/redmine``
 
 #. use a rake task to generate the new key (the old one is deleted). Adjust ``secret``:
 
-  ``$RAILS_ENV="production" rake redmine:generate_redmine_pgpkey secret="passphrase"``
+     ``$RAILS_ENV="production" rake redmine:generate_redmine_pgpkey secret="passphrase"``
 
 Managing a private PGP keys client-side
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #. Log into redmine as administrator
-#. Visit http://REDMINE.URL/pgp
-#. Follow the instructions
+
+#. Visit http://REDMINE.URL/pgp (or follow the new "PGP" link in the account menue)
+
+#. Follow the instructions (on the right side)
 
 Users
-'''''
+-----
 
 #. Log into redmine
-#. Visit http://REDMINE.URL/pgp
+
+#. Visit http://REDMINE.URL/pgp (or follow the new "PGP" link in the account menue)
+
 #. Add your public PGP key
+
 #. Copy & paste the public PGP key for the redmine server into a local file on your machine
+
 #. Import this file into your local gpg key ring
 
 *Note:* The private PGP key for the redmine server has to be added by an administrator, before the corresponding public PGP key is displayed.
 
 
 Implementation
---------------
+==============
 
 The table ``pgpkeys`` is added to the redmine database:
 
@@ -221,15 +229,16 @@ Whenever a mail is recieved:
 
 
 Problems
---------
+========
 
-Pinentry always shows up, although a passhprase is given?
+Pinentry shows up to enter passphrase
+-------------------------------------
 
-    ``gpg`` == 2.0.X will not work (see `here <https://stackoverflow.com/a/27768542>`_) and ``gpg`` >= 2.1 will probably work, if a gpgme passphrase callback function is added to the code (but is still missing). Downgrade to 1.X or install 1.X parallel and symlink ``/usr/bin/gpg`` to ``/usr/bin/gpg2``
+``gpg`` == 2.0.X will not work (see `here <https://stackoverflow.com/a/27768542>`_) and ``gpg`` >= 2.1 will probably work, if a gpgme passphrase callback function is added to the code (but is still missing). Downgrade to 1.X or install 1.X parallel and symlink ``/usr/bin/gpg`` to ``/usr/bin/gpg2``
 
 
 Improvements
-------------
+============
 
 - Add tests
 - Add languages
@@ -238,7 +247,7 @@ Improvements
 
 
 Links
------
+=====
 
 - `GPG <http://www.gnupg.org/gph/en/manual/x56.html>`_ (reference)
 - `ActionMailer <http://apidock.com/rails/ActionMailer/Base>`_ (reference)
@@ -250,13 +259,13 @@ Links
 
 
 Contributions
--------------
+=============
 
 - `Alexander Blum <https://github.com/timegrid>`_
 
 
 License
--------
+=======
 ::
 
     Redmine plugin for email encryption with the OpenPGP standard
