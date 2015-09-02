@@ -11,6 +11,14 @@ module EncryptMails
 
     def mail_with_relocation(headers={}, &block)
 
+      # whitelist of email action names resulting in unchanged mails
+      ignore = [
+        'account_activated', 'account_activation_request',
+        'account_information', 'register', 'test_email'
+      ]
+      return mail_without_relocation(headers, &block) if
+        ignore.include? @_action_name
+
       # get project
       @project = case @_action_name
         when 'issue_add', 'issue_edit'
@@ -90,7 +98,7 @@ module EncryptMails
         encrypt: false,
         sign: false
       }
-      mail_without_relocation headers
+      mail_without_relocation headers, &block
 
     end
 
@@ -104,20 +112,13 @@ module EncryptMails
         :unchanged => {:to => [], :cc => []}
       }
 
-      # whitelist of email action names resulting in unchanged mails
-      actions_unchanged = [
-        'account_activated', 'account_activation_request',
-        'account_information', 'register', 'test_email'
-      ]
-
-      # if plugin is inactive or action should be ignored
+      # if plugin is inactive
       if Setting.plugin_openpgp['activation'] == 'none' or 
-          (Setting.plugin_openpgp['activation'] == 'project' and
-           not @project.module_enabled?('openpgp')) or
-          actions_unchanged.include? @_action_name
+         (Setting.plugin_openpgp['activation'] == 'project' and
+          not @project.module_enabled?('openpgp'))
         # unchanged mails
-        reloaction[:unchanged][:to] = to_users
-        reloaction[:unchanged][:cc] = cc_users
+        reloaction[:unchanged][:to] = headers[:to]
+        reloaction[:unchanged][:cc] = headers[:cc]
       # if plugin is active
       else
         [:to, :cc].each do |field|
