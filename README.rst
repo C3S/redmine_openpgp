@@ -118,6 +118,7 @@ Administrators
 
      - Enable WS for incoming emails
      - API key
+     - Exclude attachments by name: ``*.asc, *.pgp, *.gpg``
 
 #. Configure plugin
 
