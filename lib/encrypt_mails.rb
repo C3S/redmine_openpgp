@@ -14,7 +14,7 @@ module EncryptMails
       # whitelist of email action names resulting in unchanged mails
       ignore = [
         'account_activated', 'account_activation_request',
-        'account_information', 'register', 'test_email'
+        'account_information', 'register', 'test_email', 'lost_password'
       ]
       return mail_without_relocation(headers, &block) if
         ignore.include? @_action_name
