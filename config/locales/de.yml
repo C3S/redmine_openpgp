@@ -54,7 +54,7 @@ en:
   flash_create_succesful: PGP Schlüssel erfolgreich gepeichert
   flash_delete_succesful: PGP Schlüssel erfolgreich gelöscht
   flash_generate_succesful: PGP Schlüssel erfolgreich generiert
-  filtered_mail_footer: "Diese Mail wurde für aus Gründen der Sicherheit gefiltert. Folge diesem Link und füge Deinen öffentlichen PGP SChlüssel hinzu, um ungefilterte, verschlüsselte Mails zu erhalten:"
+  filtered_mail_footer: "Diese Mail wurde für aus Gründen der Sicherheit gefiltert. Folge diesem Link und füge Deinen öffentlichen PGP Schlüssel hinzu, um ungefilterte, verschlüsselte Mails zu erhalten:"
   filtered_mail_attachments_added: Anhänge hinzugefügt
   filtered_mail_document_added: Dokument hinzugefügt
   filtered_mail_issue_add: Ticket hinzugefügt
