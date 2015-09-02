@@ -141,7 +141,7 @@ Adding an existing private PGP key server-side
 
 #. use a rake task to add the existing key (the old one is deleted). Adjust ``keyfile`` and ``secret``:
 
-     ``$RAILS_ENV="production" rake redmine:update_redmine_pgpkey keyfile="/path/to/key.asc" secret="passphrase"``
+     ``$RAILS_ENV="production" bundle exec rake redmine:update_redmine_pgpkey keyfile="/path/to/key.asc" secret="passphrase"``
 
 Generating a new private PGP key server-side
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -152,7 +152,7 @@ Generating a new private PGP key server-side
 
 #. use a rake task to generate the new key (the old one is deleted). Adjust ``secret``:
 
-     ``$RAILS_ENV="production" rake redmine:generate_redmine_pgpkey secret="passphrase"``
+     ``$RAILS_ENV="production" bundle exec rake redmine:generate_redmine_pgpkey secret="passphrase"``
 
 Managing a private PGP keys client-side
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
