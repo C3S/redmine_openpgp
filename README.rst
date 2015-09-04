@@ -65,11 +65,13 @@ This plugin has been tested with
 ::
 
     gnupg    1.4.18
-    redmine  3.1.0
     ruby     2.1.5p273
     rails    4.2.3
+    redmine  3.1.0
     gpgme    2.0.9
     mail-gpg 0.2.4
+
+*Note:* ``gpg`` == 2.0.X will not work (see `here <https://stackoverflow.com/a/27768542>`_). ``gpg`` >= 2.1 will probably work, if a gpgme passphrase callback function is added to the code (but is still missing). Downgrade to 1.X or install 1.X parallel and symlink ``/usr/bin/gpg`` to ``/usr/bin/gpg2``
 
 
 Installation
@@ -144,29 +146,29 @@ Administrators
    - *either* server-side (secure)
    - *or* client-side (**INSECURE over http**, more or less secure over https)
 
-*Note:* The remote server needs enough entropy to generate random, secure keys. If the server side generation process does not proceed or the client side connection has a timeout, connect to the remote server and try ``ls -R /``. If you use ``rngd`` for entropy generation, be advised not to use ``/dev/urandom`` as source for important keys.
+*Note:* The remote server needs enough entropy to generate random, secure keys. If the server side generation process does not proceed or the client side connection has a timeout, connect to the remote server and try ``ls -R /`` several times. If you use ``rngd`` for entropy generation, be advised not to use ``/dev/urandom`` as source for important keys.
 
 Adding an existing private PGP key server-side
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#. copy the ascii armored key into a file on the server
+#. Export the private PGP key (ascii armored) and save it into a file on the server
 
-#. change into redmine root directory
+#. Change into redmine root directory
 
      ``$cd /path/to/redmine``
 
-#. use a rake task to add the existing key (the old one is deleted). Adjust ``keyfile`` and ``secret``:
+#. Use a rake task to add the existing key, deleting the old one. Point ``keyfile`` to the absolute path to the key file and choose a ``secret``:
 
      ``$RAILS_ENV="production" bundle exec rake redmine:update_redmine_pgpkey keyfile="/path/to/key.asc" secret="passphrase"``
 
 Generating a new private PGP key server-side
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#. change into redmine root directory
+#. Change into redmine root directory
 
      ``$cd /path/to/redmine``
 
-#. use a rake task to generate the new key (the old one is deleted). Adjust ``secret``:
+#. Use a rake task to generate the new key, deleting the old one. Choose a ``secret``:
 
      ``$RAILS_ENV="production" bundle exec rake redmine:generate_redmine_pgpkey secret="passphrase"``
 
@@ -216,8 +218,8 @@ Implementation
 
 The table ``pgpkeys`` is added to the redmine database:
 
-- each entry associates a redmine user (``user_id``) with the unique fingerprint of a key (``fpr``). This allows for matching fingerprints instead of email address, thus enabling redmine users to use keys, which don't match their email address
-- the entry with ``user_id`` 0 is reserved for the private key of the redmine server additionally containing the secret passphrase
+- each entry associates a redmine user (``user_id``) with the unique fingerprint of a key (``fpr``). This allows for matching fingerprints instead of email address, thus enabling redmine users to delete/update their keys and use keys, which don't match their email address
+- the entry with ``user_id`` 0 is reserved for the private key of the redmine server additionally containing the secret passphrase (``secret``)
 
 The following gems are used:
 
@@ -251,21 +253,9 @@ Whenever a mail is sent:
 
 Whenever a mail is recieved:
 
-- if encrypted:
+- it will be decrypted if encrypted
 
-  - it will be decrypted
-
-- if the signature is invalid and mails with invalid signature should be rejected:
-
-  - it will be rejected
-
-
-Problems
-========
-
-**Pinentry shows up to enter passphrase**
-
-``gpg`` == 2.0.X will not work (see `here <https://stackoverflow.com/a/27768542>`_) and ``gpg`` >= 2.1 will probably work, if a gpgme passphrase callback function is added to the code (but is still missing). Downgrade to 1.X or install 1.X parallel and symlink ``/usr/bin/gpg`` to ``/usr/bin/gpg2``
+- depending on the plugin settings it will be rejected if the signature is invalid
 
 
 Improvements
