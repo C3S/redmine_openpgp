@@ -75,21 +75,29 @@ This plugin has been tested with
 Installation
 ============
 
+#. Change into plugin directory
+
+     ``$cd /path/to/redmine/plugins``
+
 #. Clone this repo into ``/path/to/redmine/plugins/openpgp``
 
-     ``$git clone https://github.com/C3S/redmine_openpgp /path/to/redmine/plugins/openpgp``
+     ``$git clone https://github.com/C3S/redmine_openpgp openpgp``
+
+#. Import the public PGP key for signature verification
+
+     ``$git show pgp | gpg --import``
+
+#. Verify the signature
+    
+     ``$git tag --verify 1.0``
+
+#. Change to tag 0.1
+
+     ``$git checkout tags/1.0``
 
 #. Change into redmine root directory
 
      ``$cd /path/to/redmine``
-
-#. Import the public PGP key for signature verification
-
-     ``git show pgp | gpg --import``
-
-#. Verify the signature
-    
-     ``git tag --verify 1.0``
 
 #. Install gems
 
@@ -190,6 +198,10 @@ Users
 Uninstallation
 ==============
 
+#. Change into redmine root directory
+
+     ``$cd /path/to/redmine``
+
 #. Downgrade the database
 
      ``$RAILS_ENV=production rake redmine:plugins:migrate NAME=openpgp VERSION=0``
@@ -226,7 +238,7 @@ Whenever a key is removed:
 
 Whenever a mail is sent:
 
-- if the plugin is enabled globally / on project level:
+- if the plugin is enabled globally or on project level:
 
   - if the recipient owns a key:
 

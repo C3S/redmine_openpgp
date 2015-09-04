@@ -8,7 +8,7 @@ Redmine::Plugin.register :openpgp do
   name 'OpenPGP'
   author 'Alexander Blum'
   description 'Email encryption with the OpenPGP standard'
-  version '0.1'
+  version '1.0'
   author_url 'mailto:a.blum@free-reality.net'
   url 'https://github.com/C3S/redmine_openpgp'
   settings(:default => {
