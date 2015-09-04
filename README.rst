@@ -83,13 +83,21 @@ Installation
 
      ``$cd /path/to/redmine``
 
+#. Import the public PGP key for signature verification
+
+     ``git show pgp | gpg --import``
+
+#. Verify the signature
+    
+     ``git tag --verify 1.0``
+
 #. Install gems
 
      ``$bundle install``
 
 #. Migrate database
 
-     ``$RAILS_ENV=production rake redmine:plugins:migrate``
+     ``$RAILS_ENV=production bundle exec rake redmine:plugins:migrate``
 
 #. Restart redmine
 
@@ -177,6 +185,18 @@ Users
 #. Import this file into your local gpg key ring
 
 *Note:* The private PGP key for the redmine server has to be added by an administrator, before the corresponding public PGP key is displayed.
+
+
+Uninstallation
+==============
+
+#. Downgrade the database
+
+     ``$RAILS_ENV=production rake redmine:plugins:migrate NAME=openpgp VERSION=0``
+
+#. Remove the files
+
+     ``rm -r /path/to/redmine/plugins/openpgp``
 
 
 Implementation
