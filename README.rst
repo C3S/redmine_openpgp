@@ -37,7 +37,7 @@ Unencrypted mails may be
 - *filtered*: body is reduced to the link to the added / updated object and an invitation to add the public PGP key; headers & subject are unchanged
 - *unchanged*: mail is sent unchanged
 
-Notifications, that may be filtered:
+Notifications affected:
 
 - attachments_added
 - document_added
@@ -46,7 +46,6 @@ Notifications, that may be filtered:
 - message_posted
 - news_added
 - news_comment_added
-- reminder
 - wiki_content_added
 - wiki_content_updated
 

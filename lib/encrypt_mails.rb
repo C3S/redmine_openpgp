@@ -9,142 +9,179 @@ module EncryptMails
 
   module InstanceMethods
 
+    # action names to be processed by this plugin
+    def actions
+      [
+        'attachments_added',
+        'document_added',
+        'issue_add',
+        'issue_edit',
+        'message_posted',
+        'news_added',
+        'news_comment_added',
+        'wiki_content_added',
+        'wiki_content_updated'
+      ]
+    end
+
+    # dispatched mail method
     def mail_with_relocation(headers={}, &block)
 
-      # whitelist of email action names resulting in unchanged mails
-      ignore = [
-        'account_activated', 'account_activation_request',
-        'account_information', 'register', 'test_email', 'lost_password'
-      ]
+      # pass unchanged, if action does not match or plugin is inactive
+      act = Setting.plugin_openpgp['activation']
       return mail_without_relocation(headers, &block) if
-        ignore.include? @_action_name
-
-      # get project
-      @project = case @_action_name
-        when 'issue_add', 'issue_edit'
-          @issue.project
-        when 'news_added', 'news_comment_added'
-          @news.project
-        when 'document_added'
-          @document.project
-        when 'attachments_added'
-          @attachments.first.project
-        when 'message_posted'
-          @message.project
-        when 'wiki_content_added', 'wiki_content_updated'
-          @wiki_content.project
-      end
-
-      # get key of redmine server
-      server_key = Pgpkey.find_by(:user_id => 0)
+        act == 'none' or not actions.include? @_action_name or
+        (act == 'project' and not project.try('module_enabled?', 'openpgp'))
 
       # relocate recipients
-      @relocation = relocate(headers)
+      recipients = relocate_recipients(headers)
+      header = @_message.header.to_s
 
-      # join headers
-      @_message.header_fields.each do |h|
-        headers[h.name] = h.value
-      end
-
-      # send encrypted mail
-      headers_encrypted = headers.deep_dup
-      headers_encrypted[:to] = @relocation[:encrypted][:to]
-      headers_encrypted[:cc] = @relocation[:encrypted][:cc]
-      headers_encrypted[:gpg] = { 
-        encrypt: true,
-        sign: false,
-        keys: @relocation[:encrypted][:keys]
-      }
-      if server_key
-        headers_encrypted[:gpg][:sign] = true
-        headers_encrypted[:gpg][:sign_as] = Setting['mail_from']
-        headers_encrypted[:gpg][:password] = server_key.secret
-      end
-      m = mail_without_relocation headers_encrypted do |format|
+      # render and deliver encrypted mail
+      reset(header)
+      m = mail_without_relocation prepare_headers(
+        headers, recipients[:encrypted], encrypt = true, sign = true
+      ) do |format|
         format.text
       end
       m.deliver
 
-      # send filtered mail
-      @_mail_was_called = false
-      @_message = Mail.new
-      headers_filtered = headers.deep_dup
-      headers_filtered[:to] = @relocation[:filtered][:to]
-      headers_filtered[:cc] = @relocation[:filtered][:cc]
-      headers_filtered[:gpg] = {
-        encrypt: false,
-        sign: false
-      }
-      if server_key
-        headers_filtered[:gpg][:sign] = true
-        headers_filtered[:gpg][:sign_as] = Setting['mail_from']
-        headers_filtered[:gpg][:password] = server_key.secret
-      end
-      # headers_filtered[:subject] = '[' + @project.name + '] ' + 
-      #   l( ("filtered_mail_"+@_action_name).to_sym )
-      template_name = @_action_name + '.filtered'
-      m = mail_without_relocation headers_filtered do |format|
-        format.text { render template_name }
-        format.html { render template_name } unless Setting.plain_text_mail?
+      # render and deliver filtered mail
+      reset(header)
+      tpl = @_action_name + '.filtered'
+      m = mail_without_relocation prepare_headers(
+        headers, recipients[:filtered], encrypt = false, sign = true
+      ) do |format|
+        format.text { render tpl }
+        format.html { render tpl } unless Setting.plain_text_mail?
       end
       m.deliver
 
-      # send unchanged mail
-      @_mail_was_called = false
-      @_message = Mail.new
-      headers[:to] = @relocation[:unchanged][:to]
-      headers[:cc] = @relocation[:unchanged][:cc]
-      headers[:gpg] = {
-        encrypt: false,
-        sign: false
-      }
-      mail_without_relocation headers, &block
+      # render unchanged mail (deliverd by calling method)
+      reset(header)
+      m = mail_without_relocation prepare_headers(
+        headers, recipients[:unchanged], encrypt = false, sign = false
+      ) do |format|
+        format.text
+        format.html unless Setting.plain_text_mail?
+      end
+
+      m
 
     end
 
-    def relocate(headers)
+    # get project dependent on action and object
+    def project
 
-      # relocation hash
-      reloaction = {
-        :encrypted => {:to => [], :cc => [], :keys => {}},
+      case @_action_name
+        when 'attachments_added'
+          @attachments.first.project
+        when 'document_added'
+          @document.project
+        when 'issue_add', 'issue_edit'
+          @issue.project
+        when 'message_posted'
+          @message.project
+        when 'news_added', 'news_comment_added'
+          @news.project
+        when 'wiki_content_added', 'wiki_content_updated'
+          @wiki_content.project
+        else
+          nil
+      end
+
+    end
+
+    # relocates reciepients (to, cc) of message
+    def relocate_recipients(headers)
+
+      # hash to be returned
+      recipients = {
+        :encrypted => {:to => [], :cc => []},
         :blocked   => {:to => [], :cc => []},
         :filtered  => {:to => [], :cc => []},
-        :unchanged => {:to => [], :cc => []}
+        :unchanged => {:to => [], :cc => []},
+        :lost      => {:to => [], :cc => []}
       }
 
-      # if plugin is inactive
-      if Setting.plugin_openpgp['activation'] == 'none' or 
-         (Setting.plugin_openpgp['activation'] == 'project' and
-          not @project.module_enabled?('openpgp'))
-        # unchanged mails
-        reloaction[:unchanged][:to] = headers[:to]
-        reloaction[:unchanged][:cc] = headers[:cc]
-      # if plugin is active
-      else
+      # relocation of reciepients
+      [:to, :cc].each do |field|
+        headers[field].each do |user|
+
+          # encrypted
+          unless Pgpkey.find_by(user_id: user.id).nil?
+            recipients[:encrypted][field].push user and next
+          end
+
+          # unencrypted
+          case Setting.plugin_openpgp['unencrypted_mails']
+            when 'blocked'
+              recipients[:blocked][field].push user
+            when 'filtered'
+              recipients[:filtered][field].push user
+            when 'unchanged'
+              recipients[:unchanged][field].push user
+            else
+              recipients[:lost][field].push user
+          end
+
+        end unless headers[field].blank?
+      end
+
+      recipients
+
+    end
+
+    # resets the mail for sending mails multiple times
+    def reset(header)
+
+      @_mail_was_called = false
+      @_message = Mail.new
+      @_message.header header
+
+    end
+
+    # prepares the headers for different configurations
+    def prepare_headers(headers, recipients, encrypt, sign)
+
+      h = headers.deep_dup
+
+      # headers for recipients
+      h[:to] = recipients[:to]
+      h[:cc] = recipients[:cc]
+
+      # headers for gpg
+      h[:gpg] = {
+        encrypt: false,
+        sign: false
+      }
+
+      # headers for encryption
+      if encrypt
+        h[:gpg][:encrypt] = true
+        # add pgp keys for emails
+        h[:gpg][:keys] = {}
         [:to, :cc].each do |field|
-          headers[field].each do |user|
-            # encrypted mails
-            key = Pgpkey.find_by user_id: user.id
-            if key
-              reloaction[:encrypted][field].push user
-              reloaction[:encrypted][:keys][user.mail] = key.fpr
-              next
+          h[field].each do |user|
+            user_key = Pgpkey.find_by user_id: user.id
+            unless user_key.nil?
+              h[:gpg][:keys][user.mail] = user_key.fpr
             end
-            case Setting.plugin_openpgp['unencrypted_mails']
-              # blocked mails
-              when 'blocked'
-                reloaction[:blocked][field].push user and next
-              # filtered mails
-              when 'filtered'
-                reloaction[:filtered][field].push user and next
-              # unchanged mails
-              when 'unchanged'
-                reloaction[:unchanged][field].push user and next
-            end
-          end unless headers[field].blank?
+          end unless h[field].blank?
         end
       end
-      reloaction
+
+      # headers for signature
+      if sign
+        server_key = Pgpkey.find_by(:user_id => 0)
+        unless server_key.nil?
+          h[:gpg][:sign] = true
+          h[:gpg][:sign_as] = Setting['mail_from']
+          h[:gpg][:password] = server_key.secret
+        end
+      end
+
+      h
 
     end
 
