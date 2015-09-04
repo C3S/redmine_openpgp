@@ -91,7 +91,7 @@ Installation
     
      ``$git tag --verify 1.0``
 
-#. Change to tag 0.1
+#. Change to current release tag
 
      ``$git checkout tags/1.0``
 
@@ -208,7 +208,7 @@ Uninstallation
 
 #. Remove the files
 
-     ``rm -r /path/to/redmine/plugins/openpgp``
+     ``$rm -r /path/to/redmine/plugins/openpgp``
 
 
 Implementation
@@ -263,8 +263,7 @@ Whenever a mail is recieved:
 Problems
 ========
 
-Pinentry shows up to enter passphrase
--------------------------------------
+**Pinentry shows up to enter passphrase**
 
 ``gpg`` == 2.0.X will not work (see `here <https://stackoverflow.com/a/27768542>`_) and ``gpg`` >= 2.1 will probably work, if a gpgme passphrase callback function is added to the code (but is still missing). Downgrade to 1.X or install 1.X parallel and symlink ``/usr/bin/gpg`` to ``/usr/bin/gpg2``
 
