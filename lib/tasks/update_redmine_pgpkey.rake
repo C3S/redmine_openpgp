@@ -44,7 +44,7 @@ namespace :redmine do
 
     # open and validate keyfile
     @key = File.open(keyfile, "rb").read
-    regex = /^\A\s*-----BEGIN PGP PRIVATE KEY BLOCK-----.*-----END PGP PRIVATE KEY BLOCK-----\s*?\z/m
+    regex = /^\A\s*-----BEGIN PGP PRIVATE KEY BLOCK-----(?:(?!-----BEGIN).)*?-----END PGP PRIVATE KEY BLOCK-----\s*\z/m
     abort 'Error: PGP key not valid (it should start with "-----BEGIN PGP PRIVATE KEY BLOCK-----" and end with "-----END PGP PRIVATE KEY BLOCK-----")' if not @key.match(regex)
     puts '... PGP key seems to be valid.'
 

@@ -151,7 +151,7 @@ Administrators
 Adding an existing private PGP key server-side
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#. Export the private PGP key (ascii armored) and save it into a file on the server
+#. Export the private PGP key (ascii armored, from ``-----BEGIN PGP PRIVATE KEY BLOCK-----`` to ``-----END PGP PRIVATE KEY BLOCK-----``) and save it into a file on the server
 
 #. Login as the user owning the redmine process (important for using the right gpg key ring)
 
@@ -210,7 +210,7 @@ Uninstallation
 
 #. Downgrade the database
 
-     ``$RAILS_ENV=production rake redmine:plugins:migrate NAME=openpgp VERSION=0``
+     ``$RAILS_ENV=production bundle exec rake redmine:plugins:migrate NAME=openpgp VERSION=0``
 
 #. Remove the files
 
