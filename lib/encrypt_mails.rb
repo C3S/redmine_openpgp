@@ -43,6 +43,7 @@ module EncryptMails
         headers, recipients[:encrypted], encrypt = true, sign = true
       ) do |format|
         format.text
+        format.html unless Setting.plain_text_mail?
       end
       m.deliver
 
