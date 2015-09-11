@@ -113,6 +113,18 @@ Installation
 
      ``$sudo service apache2 restart``
 
+#. Log in as the user owning the redmine process (e.g. ``redmine``)
+
+     ``$su redmine``
+
+#. Ensure, that the gpg ring is created
+
+     ``$gpg --list-keys``
+
+#. Ensure, that the gpg ring folder is owned by the user owning the redmine process
+
+     ``$chown redmine ~/.gnupg``
+
 
 Configuration
 =============
@@ -153,7 +165,9 @@ Adding an existing private PGP key server-side
 
 #. Export the private PGP key (ascii armored, from ``-----BEGIN PGP PRIVATE KEY BLOCK-----`` to ``-----END PGP PRIVATE KEY BLOCK-----``) and save it into a file on the server
 
-#. Login as the user owning the redmine process (important for using the right gpg key ring)
+#. Login as the user owning the redmine process (e.g. ``redmine``), to use the right gpg key ring
+
+     ``$su redmine``
 
 #. Change into redmine root directory
 
@@ -166,7 +180,9 @@ Adding an existing private PGP key server-side
 Generating a new private PGP key server-side
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#. Login as the user owning the redmine process (important for using the right gpg key ring)
+#. Login as the user owning the redmine process (e.g. ``redmine``), to use the right gpg key ring
+
+     ``$su redmine``
 
 #. Change into redmine root directory
 
