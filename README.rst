@@ -158,6 +158,8 @@ Administrators
    - *either* server-side (secure)
    - *or* client-side (**INSECURE over http**, more or less secure over https)
 
+*Note:* Using a passphrase for the private key may be only marginally useful, if it is only used for the purpose of this plugin alone. To retrieve the private key, one would need the rights of the user owning the redmine process. With this rights the passphrase may be retrieved by accessing the database. Anyway, having access to the database means having access to the already decrypted messages. Nevertheless, a password should not hurt ``gpg`` 1.X users.
+
 *Note:* The remote server needs enough entropy to generate random, secure keys. If the server side generation process does not proceed or the client side connection has a timeout, connect to the remote server and try ``ls -R /`` several times. If you use ``rngd`` for entropy generation, be advised not to use ``/dev/urandom`` as source for important keys.
 
 Adding an existing private PGP key server-side
