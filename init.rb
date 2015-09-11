@@ -15,6 +15,7 @@ Redmine::Plugin.register :openpgp do
     'signature_needed' => false,
     'encryption_scope' => 'project',
     'unencrypted_mails' => 'filtered',
+    'encrypted_html' => false,
     'filtered_mail_footer' => ''
   }, :partial => 'settings/openpgp')
   project_module :openpgp do

@@ -7,6 +7,7 @@ de:
   label_openpgp_activation: Plugin Aktivierung
   label_unencrypted_mails: Unverschlüsselte Mails
   label_signature_needed: Nur valide Signaturen
+  label_encrypted_html: HTML in verschlüsselten Mails
   label_filtered_mail_footer: Angehängte Nachricht in gefilterten Mails
   label_public_key: Öffentlicher PGP Schlüssel
   label_private_key: Privater PGP Schlüssel

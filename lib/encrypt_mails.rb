@@ -43,7 +43,7 @@ module EncryptMails
         headers, recipients[:encrypted], encrypt = true, sign = true
       ) do |format|
         format.text
-        format.html unless Setting.plain_text_mail?
+        format.html if Setting.plugin_openpgp['encrypted_html']
       end
       m.deliver
 

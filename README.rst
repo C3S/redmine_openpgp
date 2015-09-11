@@ -162,6 +162,8 @@ Administrators
 
 *Note:* The remote server needs enough entropy to generate random, secure keys. If the server side generation process does not proceed or the client side connection has a timeout, connect to the remote server and try ``ls -R /`` several times. If you use ``rngd`` for entropy generation, be advised not to use ``/dev/urandom`` as source for important keys.
 
+*Note:* HTML in encrypted emails are compatible with PGP/MIME and may be activated in the plugin settings. However, users may respond using PGP/Inline breaking the HTML. If you run into problems, you might provide your users with instructions on how to use PGP/MIME or deactivate html again.
+
 Adding an existing private PGP key server-side
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

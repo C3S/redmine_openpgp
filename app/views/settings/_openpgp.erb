@@ -29,6 +29,11 @@
                     ) %>
 </p>
 <p>
+    <%= label_tag     'settings[encrypted_html]', l(:label_encrypted_html) %>
+    <%= check_box_tag 'settings[encrypted_html]', nil,
+                      @settings['encrypted_html'] %>
+</p>
+<p>
     <%= label_tag     'settings[filtered_mail_footer]', l(:label_filtered_mail_footer) %>
     <%= text_area_tag 'settings[filtered_mail_footer]',
                       @settings['filtered_mail_footer'],
