@@ -153,7 +153,7 @@ Adding an existing private PGP key server-side
 
 #. Export the private PGP key (ascii armored) and save it into a file on the server
 
-#. Login as the user owning the redmine process
+#. Login as the user owning the redmine process (important for using the right gpg key ring)
 
 #. Change into redmine root directory
 
@@ -166,7 +166,7 @@ Adding an existing private PGP key server-side
 Generating a new private PGP key server-side
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#. Login as the user owning the redmine process
+#. Login as the user owning the redmine process (important for using the right gpg key ring)
 
 #. Change into redmine root directory
 
