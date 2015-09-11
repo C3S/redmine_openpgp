@@ -71,7 +71,7 @@ This plugin has been tested with
     gpgme    2.0.9
     mail-gpg 0.2.4
 
-*Note:* ``gpg`` == 2.0.X will not work (see `here <https://stackoverflow.com/a/27768542>`_). ``gpg`` >= 2.1 will probably work, if a gpgme passphrase callback function is added to the code (but is still missing). Downgrade to 1.X or install 1.X parallel and symlink ``/usr/bin/gpg`` to ``/usr/bin/gpg2``
+*Note:* ``gpg`` == 2.0.X will not work using passphrases, as pinentry is enforced to run asking for the password (see `here <https://stackoverflow.com/a/27768542>`_). In the redmine logs this results in ``Email delivery error: Bad passphrase`` messages, as pinentry cannot provide the passphrase. ``gpg`` >= 2.1 will probably work, if a gpgme passphrase callback function is added to the code (but is still missing). To resolve this problem, use an empty passphrase, or downgrade to 1.X (see `here <https://github.com/C3S/redmine_openpgp/issues/3#issuecomment-139236414>`_ for debian) or install 1.X parallel, symlink ``/usr/bin/gpg`` to ``/usr/bin/gpg2`` and check ``/usr/bin/gpg2 --version``.
 
 
 Installation
