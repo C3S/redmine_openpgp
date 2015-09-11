@@ -121,7 +121,7 @@ Installation
 
      ``$gpg --list-keys``
 
-#. Ensure, that the gpg ring folder is owned by the user owning the redmine process
+#. Ensure, that the gpg ring folder is owned by the user owning the redmine process (e.g. ``redmine``)
 
      ``$chown redmine ~/.gnupg``
 
