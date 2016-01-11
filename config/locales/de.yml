@@ -52,9 +52,9 @@ de:
   flash_import_error: Fehler beim Importieren des Schlüssels (bitte nochmal versuchen oder die Administratoren benachrichtigen)
   flash_unknown_error: Unbekannter Fehler (bitte nochmal versuchen oder die Administratoren benachrichtigen)
   flash_no_secret: Keine Passphrase angegeben (kein Problem, aber bist Du Dir sicher?)
-  flash_create_succesful: PGP Schlüssel erfolgreich gepeichert
-  flash_delete_succesful: PGP Schlüssel erfolgreich gelöscht
-  flash_generate_succesful: PGP Schlüssel erfolgreich generiert
+  flash_create_successful: PGP Schlüssel erfolgreich gepeichert
+  flash_delete_successful: PGP Schlüssel erfolgreich gelöscht
+  flash_generate_successful: PGP Schlüssel erfolgreich generiert
   filtered_mail_footer: "Diese Mail wurde aus Gründen der Sicherheit gefiltert. Folge diesem Link und füge Deinen öffentlichen PGP Schlüssel hinzu, um ungefilterte, verschlüsselte Mails zu erhalten:"
   filtered_mail_attachments_added: Anhänge hinzugefügt
   filtered_mail_document_added: Dokument hinzugefügt

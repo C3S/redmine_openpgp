@@ -42,7 +42,7 @@ class PgpkeysController < ApplicationController
 
     # save key to db
     if Pgpkey.create(:user_id => @user_id, :fpr => @fpr, :secret => @secret)
-      flash[:notice] = l(:flash_create_succesful)
+      flash[:notice] = l(:flash_create_successful)
     else
       flash[:error] = l(:flash_unknown_error)
     end
@@ -62,7 +62,7 @@ class PgpkeysController < ApplicationController
     key = Pgpkey.find_by user_id: @user_id
     fpr = key.fpr
     if key.delete
-      flash[:notice] = l(:flash_delete_succesful)
+      flash[:notice] = l(:flash_delete_successful)
     else
       flash[:error] = l(:flash_unknown_error)
     end
@@ -102,7 +102,7 @@ class PgpkeysController < ApplicationController
     # save generated key into db
     key = GPGME::Key.find(nil, params['name_email']).first
     if Pgpkey.create(:user_id => 0, :fpr => key.fingerprint, :secret => params['passphrase'])
-      flash[:notice] = l(:flash_generate_succesful)
+      flash[:notice] = l(:flash_generate_successful)
     else
       flash[:error] = l(:flash_unknown_error)
     end
