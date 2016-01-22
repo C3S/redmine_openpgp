@@ -8,4 +8,8 @@ class Pgpkey < ActiveRecord::Base
   def metadata
     GPGME::Key.get(self.fpr).to_s
   end
+
+  def subkeys
+    GPGME::Key.get(self.fpr).subkeys
+  end
 end
