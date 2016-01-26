@@ -44,7 +44,10 @@ module DecryptMails
         user = User.find_by_mail sender_email if sender_email.present?
         key = Pgpkey.find_by user_id: user.id
         signatures.each do |s|
-          valid = true if key.fpr == s.fpr
+          key.subkeys.each do |subkey|
+            valid = true if subkey.capability.include? :sign and \
+                            subkey.fpr == s.fpr
+          end
         end if not signatures.empty?
       end
 
