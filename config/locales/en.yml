@@ -1,5 +1,5 @@
 en:
-  header_openpgp: PGP Keymanagement
+  header_openpgp: PGP Key Management
   subheader_openpgp_incoming: Incoming
   subheader_openpgp_outgoing: Outgoing
   subheader_save_key: Save existing key
@@ -23,7 +23,7 @@ en:
   label_expire_date: Expire date
   label_secret: Passphrase
   option_activation_all: for all projects
-  option_activation_project: dependant on project settings
+  option_activation_project: dependent on project settings
   option_activation_none: deactivated
   option_unencrypted_mails_blocked: blocked
   option_unencrypted_mails_filtered: filtered
@@ -32,16 +32,16 @@ en:
   button_delete: Remove
   button_generate: Generate
   note_login: Please log in to manage PGP keys.
-  note_admin_only: Only administrators will be able to change the private PGP key and passphrase for the redmine server
-  note_user_public_key_missing: Add your public PGP key here to recieve encrypted mails by redmine
-  note_user_public_key_given: This PGP key is used to encrypt mails by redmine
-  note_server_public_key_missing: No key given. Please contact your administrator if you want to send encrypted mails to redmine.
-  note_server_public_key_given: Use this public PGP key to encrypt mails for redmine
-  note_server_private_key_create: Add a private PGP key for redmine to enable encrytion of mails sent to redmine
-  note_server_private_key_generate: Generate a private PGP key for redmine to enable encrytion of mails sent to redmine
-  note_receiving_emails: recieving emails must be configured within redmine, see
-  note_cleartext_create: "The private key and passphrase will be sent in cleartext! Ensure using https or better use the serverside rake task: "
-  note_cleartext_generate: "The passphrase will be sent in cleartext! Ensure using https or better use the serverside rake task: "
+  note_admin_only: Only administrators will be able to change the private PGP key and passphrase for the Redmine server
+  note_user_public_key_missing: Add your public PGP key here to receive encrypted mails by Redmine
+  note_user_public_key_given: This PGP key is used to encrypt mails by Redmine
+  note_server_public_key_missing: No key given. Please contact your administrator if you want to send encrypted mails to Redmine.
+  note_server_public_key_given: Use this public PGP key to encrypt mails for Redmine
+  note_server_private_key_create: Add a private PGP key for Redmine to enable encryption of mails sent to Redmine
+  note_server_private_key_generate: Generate a private PGP key for Redmine to enable encryption of mails sent to Redmine
+  note_receiving_emails: receiving emails must be configured within Redmine, see
+  note_cleartext_create: "The private key and passphrase will be sent in cleartext! Ensure using HTTPS, or better, use the server-side rake task: "
+  note_cleartext_generate: "The passphrase will be sent in cleartext! Ensure using HTTPS, or better, use the server-side rake task: "
   note_sent_to: sent to
   flash_public_key_not_valid: PGP key not valid (it should start with '-----BEGIN PGP PUBLIC KEY BLOCK-----' and end with '-----END PGP PUBLIC KEY BLOCK-----')
   flash_private_key_not_valid: PGP key not valid (it should start with '-----BEGIN PGP PRIVATE KEY BLOCK-----' and end with '-----END PGP PRIVATE KEY BLOCK-----')
@@ -50,13 +50,13 @@ en:
   flash_key_not_exists: Key does not exist
   flash_update_not_allowed: Operation not allowed (please don't try)
   flash_import_error: Error importing the key (please try again or contact your administrator)
-  flash_unknown_error: Unkown error (please try again or contact your administrator)
+  flash_unknown_error: Unknown error (please try again or contact your administrator)
   flash_no_secret: Passphrase is empty (no problem, but are you sure?)
-  flash_create_succesful: PGP key successfully saved
-  flash_delete_succesful: PGP key successfully deleted
-  flash_generate_succesful: PGP key successfully generated
+  flash_create_successful: PGP key successfully saved
+  flash_delete_successful: PGP key successfully deleted
+  flash_generate_successful: PGP key successfully generated
   filtered_mail_footer: "This mail was filtered for enhanced security. Follow this link and add your public PGP key to receive unfiltered encrypted mails:"
-  filtered_mail_attachments_added: Attachements added
+  filtered_mail_attachments_added: Attachments added
   filtered_mail_document_added: Document added
   filtered_mail_issue_add: Issue added
   filtered_mail_issue_edit: Issue edited
